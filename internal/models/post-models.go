@@ -29,8 +29,35 @@ func (m *PostModelImpl) Create(data Post) error {
 	return m.DBMain.Create(&data).Error
 }
 
-func (m *PostModelImpl) GetAll() ([]Post, error) {
+func (m *PostModelImpl) GetAll(page, pageSize int) ([]Post, error) {
 	var data []Post
+	if page != 0 {
+		//var count, totalPage int
+		//switch {
+		//case pageSize > 100:
+		//	pageSize = pageSize
+		//case pageSize <= 0:
+		//	pageSize = 10
+		//}
+
+		m.DBMain.Table(POSTS).Scopes(Paginate(pageSize, page)).Order("updated_date DESC").Find(&data)
+
+		return data, nil
+
+		//if count < pageSize {
+		//	totalPage = 1
+		//} else {
+		//	totalPage = count / pageSize
+		//	if (count % pageSize) != 0 {
+		//		totalPage = totalPage + 1
+		//	}
+		//}
+		//
+		//if page == 0 {
+		//	page = 1
+		//}
+
+	}
 	m.DBMain.Find(&data)
 	return data, nil
 }
