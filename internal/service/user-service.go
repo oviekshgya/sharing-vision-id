@@ -43,6 +43,7 @@ func (s *UserService) GetData(id int, page, pageSize int) (interface{}, error) {
 			DBMain: tz,
 		}
 		if id != 0 {
+
 			resultData, errData := impl.GetById(uint(id))
 			if errData != nil {
 				return nil, errData
@@ -97,6 +98,7 @@ func (s *UserService) Update(input models.Post) (interface{}, error) {
 			Content:     input.Content,
 			CreatedDate: time.Now(),
 			UpdatedDate: time.Now(),
+			ID:          input.ID,
 		}); created != nil {
 			return nil, created
 		}

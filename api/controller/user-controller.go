@@ -48,25 +48,25 @@ func (controller *UserController) Create(c *fiber.Ctx) error {
 
 func (controller *UserController) GetAll(c *fiber.Ctx) error {
 	responseInitial := pkg.InitialResponse{Ctx: c}
-	pageSize, _ := strconv.Atoi(c.Params(":limit"))
-	page, _ := strconv.Atoi(c.Params(":offset"))
+	pageSize, _ := strconv.Atoi(c.Params("limit"))
+	page, _ := strconv.Atoi(c.Params("offset"))
 	result, err := controller.UserService.GetData(0, page, pageSize)
 	if err != nil {
 		return responseInitial.Respose(fiber.StatusInternalServerError, "error creating post: "+err.Error(), true, nil)
 	}
 
-	return responseInitial.Respose(http.StatusOK, "Created", false, result)
+	return responseInitial.Respose(http.StatusOK, "OK", false, result)
 }
 
 func (controller *UserController) GetById(c *fiber.Ctx) error {
 	responseInitial := pkg.InitialResponse{Ctx: c}
-	id, _ := strconv.Atoi(c.Params(":id"))
+	id, _ := strconv.Atoi(c.Params("id"))
 	result, err := controller.UserService.GetData(id, 0, 0)
 	if err != nil {
 		return responseInitial.Respose(fiber.StatusInternalServerError, "error creating post: "+err.Error(), true, nil)
 	}
 
-	return responseInitial.Respose(http.StatusOK, "Created", false, result)
+	return responseInitial.Respose(http.StatusOK, "Ok", false, result)
 }
 
 func (controller *UserController) Update(c *fiber.Ctx) error {
@@ -76,22 +76,24 @@ func (controller *UserController) Update(c *fiber.Ctx) error {
 		return responseInitial.Respose(fiber.StatusBadRequest, "invalid payload request: "+err.Error(), true, nil)
 	}
 
+	id, _ := strconv.Atoi(c.Params("id"))
+	input.ID = uint(id)
 	result, err := controller.UserService.Update(input)
 	if err != nil {
 		return responseInitial.Respose(fiber.StatusInternalServerError, "error creating post: "+err.Error(), true, nil)
 	}
 
-	return responseInitial.Respose(http.StatusAccepted, "update", false, result)
+	return responseInitial.Respose(http.StatusAccepted, "Updated", false, result)
 }
 
 func (controller *UserController) Delete(c *fiber.Ctx) error {
 	responseInitial := pkg.InitialResponse{Ctx: c}
 
-	id, _ := strconv.Atoi(c.Params(":id"))
+	id, _ := strconv.Atoi(c.Params("id"))
 	result, err := controller.UserService.Delete(uint(id))
 	if err != nil {
 		return responseInitial.Respose(fiber.StatusInternalServerError, "error creating post: "+err.Error(), true, nil)
 	}
 
-	return responseInitial.Respose(http.StatusAccepted, "update", false, result)
+	return responseInitial.Respose(http.StatusAccepted, "Deleted", false, result)
 }

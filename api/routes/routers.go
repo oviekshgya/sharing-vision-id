@@ -10,7 +10,6 @@ var (
 )
 
 func Route() {
-	Router.Static("/demo", "./public/views")
 	article := Router.Group("/article")
 	article.Use(middlewares.CORSMiddleware())
 	{
