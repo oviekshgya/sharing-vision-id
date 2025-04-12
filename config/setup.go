@@ -50,8 +50,6 @@ func Start() {
 
 	routes.InitialRoute()
 	routes.Route()
-	db.ConnectRabbitMQ()
-	go db.StartConsumerPayment()
 
 	if !fiber.IsChild() {
 		log.Printf("INFO: SERVICE RUNNING ON PORT %s", conf.Server.Port)

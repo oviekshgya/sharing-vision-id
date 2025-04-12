@@ -2,10 +2,7 @@ package config
 
 import (
 	"github.com/spf13/viper"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
 	"log"
-	"sharing-vision-id/pkg"
 )
 
 var Config *Configuration
@@ -76,13 +73,6 @@ func AppConfig() {
 	configuration.Oauth.OAUTH_CLIENT_SECRET = viper.GetString("OAUTH_CLIENT_SECRET")
 	configuration.Oauth.OAUTH_REDIRECT_URL = viper.GetString("OAUTH_REDIRECT_URL")
 	Config = configuration
-	pkg.GoogleOAuthConfig = &oauth2.Config{
-		ClientID:     Config.Oauth.OAUTH_CLIENT_ID,
-		ClientSecret: configuration.Oauth.OAUTH_CLIENT_SECRET,
-		RedirectURL:  Config.Oauth.OAUTH_REDIRECT_URL,
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
-		Endpoint:     google.Endpoint,
-	}
 
 }
 

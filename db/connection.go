@@ -6,6 +6,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
+	"sharing-vision-id/internal/models"
 	"time"
 
 	"github.com/streadway/amqp"
@@ -28,10 +29,10 @@ type DatabaseConfig struct {
 var ConnDB *gorm.DB
 
 func Migrate(db *gorm.DB) {
-	//db.AutoMigrate(&models.User{}, &models.AccountFintech{}, &models.Transaction{}, &models.Log{})
-	//if db.Error != nil {
-	//	log.Fatal(db.Error)
-	//}
+	db.AutoMigrate(&models.Post{})
+	if db.Error != nil {
+		log.Fatal(db.Error)
+	}
 }
 
 func (conf DatabaseConfig) ConnectionDataBaseMain() {
