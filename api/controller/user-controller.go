@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
@@ -31,11 +32,18 @@ func HandlerController(db *gorm.DB) *UserController {
 	}
 }
 
+var validate = validator.New()
+
 func (controller *UserController) Create(c *fiber.Ctx) error {
 	responseInitial := pkg.InitialResponse{Ctx: c}
 	var input models.Post
 	if err := c.BodyParser(&input); err != nil {
 		return responseInitial.Respose(fiber.StatusBadRequest, "invalid payload request: "+err.Error(), true, nil)
+	}
+
+	if err := validate.Struct(input); err != nil {
+		// Jika ada error validasi, return error dengan pesan yang sesuai
+		return responseInitial.Respose(fiber.StatusBadRequest, "Validation failed: "+err.Error(), true, nil)
 	}
 
 	result, err := controller.UserService.CreatePost(input)
